@@ -126,7 +126,19 @@ class List {
    * @public
    */
   save() {
-    return this.data;
+    var clonedData = $.extend(true, {}, this.data);
+	
+    for (var item_idx in clonedData.items) {
+      var dmy = document.createElement( 'html' );   // dummy DOM element
+	  dmy.innerHTML = clonedData.items[item_idx];
+	  
+      for (var el of dmy.querySelectorAll("span.inline-math")) {
+        el.querySelector('script').removeAttribute('id');
+        el.innerHTML = el.querySelector('script').outerHTML;
+      }
+	  clonedData.items[item_idx] = dmy.innerHTML;
+    }
+    return clonedData;
   }
 
   /**
